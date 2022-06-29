@@ -168,7 +168,7 @@
     "description": "Option text for how the view is set."
   },
   "assistant.actionEnsureMessagePaneVisible": {
-    "message": "Переконайтеся, що панель повідомлення видима.",
+    "message": "Переконатися, що панель повідомлення видима.",
     "description": "Option text for ensuring the message pane is visible."
   },
   "assistant.settings2": {
@@ -176,19 +176,19 @@
     "description": "Paragraph informing users of the ability to change settings later."
   },
   "gallery.messageMovedOrDeleted": {
-    "message": "Шкода, але ми не можемо показати перегляд галереї, тому що повідомлення переміщено або видалено.",
+    "message": "Перепрошуємо, але ми не можемо показати вигляд галереї, тому що повідомлення переміщено або видалено.",
     "description": "Message displayed if the email that the gallery is trying to view cannot be found."
   },
   "gallery.title": {
-    "message": "Вигляд галереї за : $1",
+    "message": "Вигляд галереї для: $1",
     "description": "The tab title for the image gallery"
   },
   "options.start_setup_assistant": {
-    "message": "Запустити майстер налаштувань",
+    "message": "Запустити помічник налаштувань",
     "description": "Title of the button to open the setup assistant."
   },
   "message.movedOrDeletedConversation": {
-    "message": "Шкода, але ми не можемо показати цю розмову, тому що повідомлення переміщено або видалено.",
+    "message": "На жаль, ми не можемо показати цю розмову, оскільки повідомлення було переміщено або видалено.",
     "description": "Error message for the conversation tab"
   },
   "contact.copyEmailTooltip": {
@@ -196,7 +196,7 @@
     "description": "Tooltip shown on the copy email to clipboard button"
   },
   "contact.createFilterTooltip": {
-    "message": "створити фільтр для відправника",
+    "message": "Створити фільтр для відправника",
     "description": "Tooltip shown on the create filter for contact button"
   },
   "contact.addContactTooltip": {
@@ -220,19 +220,19 @@
     "description": "Tooltip shown on the recent conversations button"
   },
   "message.forwardConversation": {
-    "message": "Переслати цю розмову",
+    "message": "Переслати розмову",
     "description": "The link text for forwarding a conversation"
   },
   "message.printConversation": {
-    "message": "Друкувати цю розмову",
+    "message": "Друкувати розмову",
     "description": "The link text for printing a conversation"
   },
   "message.trash.tooltip": {
-    "message": "Видалити цю розмову",
+    "message": "Видалити розмову",
     "description": "Tooltip for the trash button in the conversation header"
   },
   "message.archive.tooltip": {
-    "message": "Архівувати цю розмову",
+    "message": "Архівувати розмову",
     "description": "Tooltip for the archive button in the conversation header"
   },
   "message.junk.tooltip": {
@@ -244,11 +244,11 @@
     "description": "Tooltip for the expand button in the conversation header"
   },
   "message.read.tooltip": {
-    "message": "Перемкнути прочитані/непрочитані всі повідомлення",
+    "message": "Зробити розмову прочитаною / непрочитаною",
     "description": "Tooltip for the mark as read button in the conversation header"
   },
   "message.detach.tooltip": {
-    "message": "Показати цю розмову в новій вкладці",
+    "message": "Відкрити розмову в новій вкладці",
     "description": "Tooltip for the detach to new tab button in the conversation header"
   },
   "message.loading": {
@@ -280,11 +280,11 @@
     "description": "Tooltip for the remove star button"
   },
   "action.archive": {
-    "message": "Архівувати це повідомлення",
+    "message": "Архівувати повідомлення",
     "description": "Archive button name in the message more menu"
   },
   "action.delete": {
-    "message": "Видалити це повідомлення",
+    "message": "Видалити повідомлення",
     "description": "Delete button name in the message more menu"
   },
   "action.viewClassic": {
@@ -374,7 +374,7 @@
     "description": "Header name displayed for the cc field"
   },
   "header.to": {
-    "message": "кому",
+    "message": "Кому:",
     "description": "Used in the header, inserted in 'from me to you'."
   },
   "tags.jumpToFolder.tooltip": {
@@ -382,7 +382,7 @@
     "description": "Tooltip for the jump to folder tag."
   },
   "tags.inFolder": {
-    "message": "В $folderName$",
+    "message": "$folderName$",
     "description": "Folder indication for the jump to folder tag.",
     "placeholders": {
       "folderName": {
@@ -404,7 +404,7 @@
     "description": "Tooltip for the view attachments in gallery button."
   },
   "attachments.preview.tooltip": {
-    "message": "Перегляд",
+    "message": "Попередній перегляд",
     "description": "Tooltip displayed for the preview button of an attachment."
   },
   "attachments.open.tooltip": {
@@ -440,7 +440,7 @@
     "description": "This is used in messages, for the recipients, and the 'between' column as well. In English, space after the comma."
   },
   "header.andSeparator": {
-    "message": " та ",
+    "message": " і ",
     "description": "This is used in messages, for the recipients, and the 'between' column as well. In English, space after and before « and »."
   },
   "attachments.context.detach": {
@@ -594,7 +594,7 @@
     "description": "Tag description displayed when a message has been decrypted."
   },
   "enigmail.messageDecryptedLong": {
-    "message": "Це повідомлення розшифроване для його показу",
+    "message": "Це повідомлення було розшифровано для показу",
     "description": "Tooltip displayed when a message has been decrypted."
   },
   "openpgp.signedByLabel": {
@@ -678,7 +678,7 @@
     "description": "Description for the undo customizations button."
   },
   "options.undoCustomizations.tooltip": {
-    "message": "Відновити параметри, що були при першому встановленні.",
+    "message": "Відновити параметри на момент встановлення.",
     "description": "Tooltip for the undo customizations button."
   },
   "options.undoCustomizations.finished": {
