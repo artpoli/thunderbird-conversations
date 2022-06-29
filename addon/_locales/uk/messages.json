@@ -4,279 +4,331 @@
     "description": "Name of the extension."
   },
   "extensionDescription": {
-    "message": "Повноцінні розмови у вашому Thunderbird!",
+    "message": "Brings a conversation view to a Thunderbird near you!",
     "description": "Description of the extension."
   },
   "options.expand_who": {
-    "message": "Типово, розгорнути:",
+    "message": "By default, expand:",
     "description": "Options - label for which messages should be expanded."
   },
   "options.expand_auto": {
-    "message": "Автоматично",
+    "message": "Automatic",
     "description": "Options - label for automatically expanding messages."
   },
   "options.expand_auto.tooltip": {
-    "message": "Якщо розмову згорнуто, розгорнути всі непрочитані повідомлення, або останнє повідомлення. Якщо розгорнуто, розгортати лише вибране повідомлення зі списку.",
+    "message": "If the thread is collapsed, expand all unread messages or the last message. If it is expanded, only expand the selected message in the message list.",
     "description": "Options - tooltip for automatically expanding messages."
   },
   "options.expand_none": {
-    "message": "Немає повідомлень",
+    "message": "No messages",
     "description": "Options - label for not expanding messages."
   },
   "options.expand_all": {
-    "message": "Усі повідомлення",
+    "message": "All messages",
     "description": "Options - label for expanding all messages."
   },
   "options.quoting_title": {
-    "message": "Цитований текст",
+    "message": "Quoted text",
     "description": "Options - title for quoted text."
   },
   "options.quoting_desc": {
-    "message": "Цитати вище вказаної кількості рядків будуть згорнуті.",
+    "message": "Quotes higher than this number of lines will be collapsed.",
     "description": "Options - description for quoted text."
   },
   "options.hide_sigs_title": {
-    "message": "Приховати підписи",
+    "message": "Hide Signatures",
     "description": "Options - title for hiding signatures."
   },
   "options.hide_sigs_desc": {
-    "message": "Чи підписи типово згортаються.",
+    "message": "Whether signatures are collapsed by default.",
     "description": "Options - description for hiding signatures."
   },
   "options.friendly_date_title": {
-    "message": "Без дружніх дат",
+    "message": "No friendly dates",
     "description": "Options - title for if to show friendly dates."
   },
   "options.friendly_date_desc": {
-    "message": "У верхньому правому кутку показувати звичайні дати, як у списку повідомлень, а не \"вчора\", \"минулого тижня\" та подібні.",
+    "message": "In the top right corner, use \"normal\" dates, just like the message list, instead of \"yesterday\" and others.",
     "description": "Options - description for if to show friendly dates."
   },
   "options.tweak_chrome_title": {
-    "message": "Оптимізувати шрифти інтерфейсу",
+    "message": "Tweak chrome fonts",
     "description": "Options - title for tweaking chrome fonts."
   },
   "options.tweak_chrome_desc": {
-    "message": "Зменшувати розмір шрифту для інтерфейсу розмов (рекомендовано, необхідний перезапуск).",
+    "message": "Scale down the font size for the conversation chrome (recommended, requires restart).",
     "description": "Options - description for tweaking chrome fonts."
   },
   "options.tweak_bodies_title": {
-    "message": "Оптимізувати шрифти вмісту",
+    "message": "Tweak body fonts",
     "description": "Options - title for tweaking message body fonts."
   },
   "options.tweak_bodies_desc": {
-    "message": "Оптимізувати шрифти вмісту повідомлень, щоб зробити їх відповідними зовнішнім шрифтам (рекомендовано, необхідний перезапуск).",
+    "message": "Tweak the fonts in the message bodies to make them consistent with the outer font (recommended, requires restart).",
     "description": "Options - description for tweaking message body fonts."
   },
   "options.operate_on_conversations_title": {
-    "message": "Архівування / Видалення",
+    "message": "Archive/delete behavior",
     "description": "Options - title for archive/delete behavior."
   },
   "options.operate_on_conversations_desc": {
-    "message": "Кнопки панелі повинні архівувати й видаляти розмови цілком, а не лише вибрані повідомлення.",
+    "message": "Toolbar buttons should archive and delete the entire conversation, not just selected messages.",
     "description": "Options - description for archive/delete behavior."
   },
   "options.extra_attachments_title": {
-    "message": "Я люблю вкладення",
+    "message": "I love attachments",
     "description": "Options - title for attachment settings."
   },
   "options.extra_attachments_desc": {
-    "message": "В окремих випадках Thunderbird не зможе розпізнавати деякі вкладення. Цей параметр дозволяє обійти цей недолік Thunderbird і показати всі можливі вкладення. Використовуйте комбіновано з додатком Show All Body Parts.",
+    "message": "In some corner cases, Thunderbird will fail to recognize some attachments. This option allows you to workaround the Thunderbird bug, and makes sure we try to display as many attachments as we can. Use in combination with the Show All Body Parts addon.",
     "description": "Options - description for attachment settings."
   },
   "options.hide_quick_reply_title": {
-    "message": "Приховати швидку відповідь",
+    "message": "Hide Quick Reply",
     "description": "Options - title for hiding quick reply display."
   },
   "options.hide_quick_reply_desc": {
-    "message": "Приховати панель швидкої відповіді в розмовах.",
+    "message": "Hide the quick reply box on conversations.",
     "description": "Options - description for hiding the quick reply display."
   },
+  "options.disable_between_column_title": {
+    "message": "Disable Between Column (Requires restart)",
+    "description": "Options - title for disabling the between column."
+  },
+  "options.disable_between_column_desc": {
+    "message": "Disables the between column. This may be helpful to set if you don't use the between column, but find Thunderbird still attempts to display it every time.",
+    "description": "Options - description for disabling the between column."
+  },
   "options.compose_in_tab2_title": {
-    "message": "Увімкнути вкладку редактора",
+    "message": "Enable composition tab",
     "description": "Options - title for enabling the hidden compose in a tab option."
   },
   "options.compose_in_tab2_desc": {
-    "message": "Ctrl-Shift-N відкриває прихований редактор у новій вкладці (експериментально).",
+    "message": "Ctrl-Shift-N opens the hidden composition in a new tab (experimental).",
     "description": "Options - description for enabling the hidden compose in a tab option."
   },
   "options.debugging_title": {
-    "message": "Зневадження",
+    "message": "Debugging",
     "description": "Options - title for debugging setting."
   },
   "options.debugging_desc": {
-    "message": "Активувати вивід зневадження в системній консолі та консолі помилок. Ця дія генеруватиме багато повідомлень.",
+    "message": "Enable debug output in the system console and the error console. This will generate a lot of messages.",
     "description": "Options - description for debugging setting."
   },
   "assistant.title": {
-    "message": "Помічник першого запуску",
+    "message": "First run assistant",
     "description": "The document title of the assistant page."
   },
+  "assistant.intro2": {
+    "message": "This assistant will tweak your Thunderbird setup to ensure you enjoy the optimal experience.",
+    "description": "Introduction paragraph for the assistant."
+  },
+  "assistant.settingsBetweenTitle": {
+    "message": "Would you like to display the Between column by default?",
+    "description": "Title for the section for enabling the between column."
+  },
+  "assistant.settingsBetweenDetail": {
+    "message": "This adds a column in the message list to show you the names of everyone involved in the conversation.",
+    "description": "Details for the section for enabling the between column."
+  },
+  "assistant.actionEnableBetween": {
+    "message": "Enable Between column",
+    "description": "Label for the checkbox for enabling the between column."
+  },
+  "assistant.settingsColumnInfo": {
+    "message": "You can always right-click on the column headers to enable and disable them.",
+    "description": "Information after the between column about how to enable and disable columns."
+  },
+  "assistant.otherSettingsTitle": {
+    "message": "Other Settings",
+    "description": "Title for the other settings."
+  },
   "assistant.working": {
-    "message": "Обробка...",
+    "message": "Working...",
     "description": "An indication that the assistant is working."
   },
+  "assistant.workingText": {
+    "message": "This may take some time. You can either wait for this tab to close, or close the tab yourself, and check the progress from Tools > Activity Manager.",
+    "description": "Third detail paragraph for the assistant."
+  },
   "assistant.apply": {
-    "message": "Застосувати зміни",
+    "message": "Apply changes",
     "description": "The apply button title for the assistant."
   },
   "assistant.actionEnableGloda": {
-    "message": "Переконайтеся, що глобальний пошук та індексування увімкнено.",
+    "message": "Make sure Global Search and Indexer is enabled.",
     "description": "Option text for enabling Gloda."
   },
   "assistant.actionOfflineDownload": {
-    "message": "Вхідні й Надіслані синхронізуються для автономного сховища (рекомендовано).",
+    "message": "Inbox and Sent are synchronized for offline storage (strongly recommended).",
     "description": "Option text for allowing offline download."
   },
+  "assistant.actionSetupMessageViews": {
+    "message": "Make the message list display threaded and sort it by date. Apply to all folders (strongly recommended).",
+    "description": "Option text for how the view is set."
+  },
   "assistant.actionEnsureMessagePaneVisible": {
-    "message": "Переконайтеся, що панель повідомлення видима.",
+    "message": "Make sure the message pane is visible.",
     "description": "Option text for ensuring the message pane is visible."
   },
   "assistant.settings2": {
-    "message": "Якщо ви згодом захочете увімкнути інші параметри, ви можете отримати доступ до цього майстра через налаштування додатка в розділі \"додатково\".",
+    "message": "Should you wish to enable more options later, you can access this wizard through the addon's preferences, under the \"advanced\" section.",
     "description": "Paragraph informing users of the ability to change settings later."
   },
   "gallery.messageMovedOrDeleted": {
-    "message": "Шкода, але ми не можемо показати перегляд галереї, тому що повідомлення переміщено або видалено.",
+    "message": "We're sorry, but we can't display this gallery view, because the message has been moved or deleted.",
     "description": "Message displayed if the email that the gallery is trying to view cannot be found."
   },
   "gallery.title": {
-    "message": "Вигляд галереї за : $1",
+    "message": "Gallery view for : $1",
     "description": "The tab title for the image gallery"
   },
   "options.start_setup_assistant": {
-    "message": "Запустити майстер налаштувань",
+    "message": "Start the setup assistant",
     "description": "Title of the button to open the setup assistant."
   },
   "message.movedOrDeletedConversation": {
-    "message": "Шкода, але ми не можемо показати цю розмову, тому що повідомлення переміщено або видалено.",
+    "message": "We're sorry, but we can't display this conversation, because the messages have been moved or deleted.",
     "description": "Error message for the conversation tab"
   },
   "contact.copyEmailTooltip": {
-    "message": "Копіювати адресу е-пошти в буфер обміну",
+    "message": "Copy email address to clipboard",
     "description": "Tooltip shown on the copy email to clipboard button"
   },
   "contact.createFilterTooltip": {
-    "message": "створити фільтр для відправника",
+    "message": "create filter for sender",
     "description": "Tooltip shown on the create filter for contact button"
   },
   "contact.addContactTooltip": {
-    "message": "Додати до адресної книги",
+    "message": "Add to address book",
     "description": "Tooltip shown on the add contact button"
   },
   "contact.editContactTooltip": {
-    "message": "Редагувати контакт в адресній книзі",
+    "message": "Edit contact in address book",
     "description": "Tooltip shown on the edit contact button"
   },
+  "contact.viewContactTooltip": {
+    "message": "View contact in address book",
+    "description": "Tooltip shown on the view contact button for read-only contacts"
+  },
   "contact.sendEmailTooltip": {
-    "message": "Надіслати пошту",
+    "message": "send email",
     "description": "Tooltip shown on the send email button"
   },
   "contact.recentConversationsTooltip": {
-    "message": "Останні розмови",
+    "message": "recent conversations",
     "description": "Tooltip shown on the recent conversations button"
   },
   "message.forwardConversation": {
-    "message": "Переслати цю розмову",
+    "message": "Forward this conversation",
     "description": "The link text for forwarding a conversation"
   },
   "message.printConversation": {
-    "message": "Друкувати цю розмову",
+    "message": "Print this conversation",
     "description": "The link text for printing a conversation"
   },
   "message.trash.tooltip": {
-    "message": "Видалити цю розмову",
+    "message": "Delete this conversation",
     "description": "Tooltip for the trash button in the conversation header"
   },
   "message.archive.tooltip": {
-    "message": "Архівувати цю розмову",
+    "message": "Archive this conversation",
     "description": "Tooltip for the archive button in the conversation header"
   },
   "message.junk.tooltip": {
-    "message": "Це небажане повідомлення",
+    "message": "Junk this message",
     "description": "Tooltip for the junk button in the conversation header"
   },
   "message.expand.tooltip": {
-    "message": "Розгорнути/згорнути всі повідомлення",
+    "message": "Expand/collapse all messages",
     "description": "Tooltip for the expand button in the conversation header"
   },
   "message.read.tooltip": {
-    "message": "Перемкнути прочитані/непрочитані всі повідомлення",
+    "message": "Toggle read/unread all messages",
     "description": "Tooltip for the mark as read button in the conversation header"
   },
   "message.detach.tooltip": {
-    "message": "Показати цю розмову в новій вкладці",
+    "message": "Show this conversation in a new tab",
     "description": "Tooltip for the detach to new tab button in the conversation header"
   },
   "message.loading": {
-    "message": "Завантаження...",
+    "message": "Loading...",
     "description": "Displayed when the message is loading"
   },
   "message.noSubject": {
-    "message": "(без теми)",
+    "message": "(no subject)",
     "description": "Displayed when a message has no subject"
   },
   "message.showDetails.tooltip": {
-    "message": "Показати подробиці",
+    "message": "show details",
     "description": "Tooltip for showing message header details"
   },
   "message.hideDetails.tooltip": {
-    "message": "Приховати подробиці",
+    "message": "hide details",
     "description": "Tooltip for hiding message header details"
   },
   "message.moreMenu.tooltip": {
-    "message": "Більше",
+    "message": "more",
     "description": "Tooltip for the more menu"
   },
+  "message.addStar.tooltip": {
+    "message": "Add Star",
+    "description": "Tooltip for the add star button"
+  },
+  "message.removeStar.tooltip": {
+    "message": "Remove Star",
+    "description": "Tooltip for the remove star button"
+  },
   "action.archive": {
-    "message": "Архівувати це повідомлення",
+    "message": "archive this message",
     "description": "Archive button name in the message more menu"
   },
   "action.delete": {
-    "message": "Видалити це повідомлення",
+    "message": "delete this message",
     "description": "Delete button name in the message more menu"
   },
   "action.viewClassic": {
-    "message": "Переглянути в класичному поданні",
+    "message": "view using the classic reader",
     "description": "Show in classic view button name in the message more menu"
   },
   "action.viewSource": {
-    "message": "Переглянути джерело повідомлення",
+    "message": "view message source",
     "description": "View source button name in the message more menu"
   },
   "notification.scamMsg": {
-    "message": "Це повідомлення може бути шахрайством:",
+    "message": "This message may be a scam:",
     "description": "Notification message shown for a junk/scam message"
   },
   "notification.ignoreScamWarning": {
-    "message": "Ігнорувати попередження",
+    "message": "ignore warning",
     "description": "Button title to ignore a junk/scam message"
   },
   "notification.junkMsg": {
-    "message": "Це небажана пошта",
+    "message": "This is junk mail",
     "description": "Notification message shown for junk messages"
   },
   "notification.notJunk": {
-    "message": "Це потрібна пошта",
+    "message": "Not junk",
     "description": "Button title to mark as not junk"
   },
   "notification.isOutboxMsg": {
-    "message": "Це не надіслане повідомлення.",
+    "message": "This is an unsent message.",
     "description": "Notification message shown for a message in the outbox"
   },
   "notification.sendUnsent": {
-    "message": "Надіслати не надіслані повідомлення зараз?",
+    "message": "Send unsent messages now?",
     "description": "Button title to send a message in the outbox"
   },
   "notification.remoteContentBlockedMsg": {
-    "message": "Зовнішній вміст приховано:",
+    "message": "Remote content was hidden:",
     "description": "Notification message shown when remote content is blocked"
   },
   "notification.showRemote": {
-    "message": "Показати зовнішній вміст",
+    "message": "show remote content",
     "description": "Button title to show remote content"
   },
   "notification.alwaysShowRemote": {
-    "message": "Завжди показувати зовнішній вміст від $fromEmail$",
+    "message": "always show remote content from $fromEmail$",
     "description": "Button title to always show remote content.",
     "placeholders": {
       "fromEmail": {
@@ -286,51 +338,51 @@
     }
   },
   "action.editDraft": {
-    "message": "Редагувати чернетку",
+    "message": "edit draft",
     "description": "Edit draft button name in the message more menu"
   },
   "action.reply": {
-    "message": "Відповісти",
+    "message": "reply",
     "description": "Reply button name in the message more menu"
   },
   "action.replyAll": {
-    "message": "Відповісти всім",
+    "message": "reply all",
     "description": "Reply all button name in the message more menu"
   },
   "action.replyList": {
-    "message": "Відповісти списку",
+    "message": "reply to list",
     "description": "Reply list button name in the message more menu"
   },
   "action.editNew": {
-    "message": "Редагувати як нове",
+    "message": "edit as new",
     "description": "Edit as new button name in the message more menu"
   },
   "action.forward": {
-    "message": "Переслати",
+    "message": "forward",
     "description": "Forward button name in the message more menu"
   },
   "message.fromHeader": {
-    "message": "Від:",
+    "message": "from:",
     "description": "Header name displayed for the from field"
   },
   "message.toHeader": {
-    "message": "Кому:",
+    "message": "to:",
     "description": "Header name displayed for the to field"
   },
   "message.ccHeader": {
-    "message": "Копія:",
+    "message": "cc:",
     "description": "Header name displayed for the cc field"
   },
   "header.to": {
-    "message": "кому",
+    "message": "to",
     "description": "Used in the header, inserted in 'from me to you'."
   },
   "tags.jumpToFolder.tooltip": {
-    "message": "Перейти до цієї теки",
+    "message": "Jump to this folder",
     "description": "Tooltip for the jump to folder tag."
   },
   "tags.inFolder": {
-    "message": "В $folderName$",
+    "message": "In $folderName$",
     "description": "Folder indication for the jump to folder tag.",
     "placeholders": {
       "folderName": {
@@ -339,44 +391,48 @@
       }
     }
   },
+  "tags.removeButton": {
+    "message": "Remove tag",
+    "description": "Message label/tooltip for removing a tag."
+  },
   "attachments.downloadAll.tooltip": {
-    "message": "Зберегти все",
+    "message": "save all",
     "description": "Tooltip for the download all attachments button."
   },
   "attachments.gallery.tooltip": {
-    "message": "Вигляд галереї",
+    "message": "gallery view",
     "description": "Tooltip for the view attachments in gallery button."
   },
   "attachments.preview.tooltip": {
-    "message": "Перегляд",
+    "message": "preview",
     "description": "Tooltip displayed for the preview button of an attachment."
   },
   "attachments.open.tooltip": {
-    "message": "Відкрити",
+    "message": "open",
     "description": "Tooltip displayed for the preview button of an attachment."
   },
   "attachments.viewAttachment.tooltip": {
-    "message": "Переглянути це вкладення у новій вкладці",
+    "message": "View this attachment in a new tab",
     "description": "Tooltip displayed for an attachment that can be previewed in a tab."
   },
   "attachments.download.tooltip": {
-    "message": "Зберегти",
+    "message": "save",
     "description": "Tooltip displayed for the download button of an attachment."
   },
   "messageBody.hideQuotedText": {
-    "message": "Приховати цитований текст",
+    "message": "hide quoted text",
     "description": "String displayed in a message body to collapse the quoted text."
   },
   "messageBody.showQuotedText": {
-    "message": "Показати цитований текст",
+    "message": "show quoted text",
     "description": "String displayed in a message body to expand the quoted text."
   },
   "messageBody.hideSigText": {
-    "message": "Приховати підпис",
+    "message": "hide signature",
     "description": "String displayed in a message body to collapse the signature."
   },
   "messageBody.showSigText": {
-    "message": "Показати підпис",
+    "message": "show signature",
     "description": "String displayed in a message body to expand the signature."
   },
   "header.commaSeparator": {
@@ -384,15 +440,15 @@
     "description": "This is used in messages, for the recipients, and the 'between' column as well. In English, space after the comma."
   },
   "header.andSeparator": {
-    "message": " та ",
+    "message": " and ",
     "description": "This is used in messages, for the recipients, and the 'between' column as well. In English, space after and before « and »."
   },
   "attachments.context.detach": {
-    "message": "Від’єднати вкладення",
+    "message": "Detach attachment",
     "description": "Context menu item to detach an attachment."
   },
   "attachments.context.delete": {
-    "message": "Видалити вкладення",
+    "message": "Delete attachment",
     "description": "Context menu item to delete an attachment."
   },
   "pluralForm": {
@@ -400,7 +456,7 @@
     "description": "Please make sure you read and understood https://developer.mozilla.org/en/Localization_and_Plurals. pluralForm corresponds to the 'pluralRule' variable that's described in the page, it's just a mistake if the name doesn't match the MDC page."
   },
   "attachments.numAttachments": {
-    "message": "Один вкладений файл;$num$ вкладені файли;$num$ вкладених файлів",
+    "message": "one attachment;$num$ attachments",
     "description": "The description used for how many attachments there are. This should take the form of a plural form, see also 'pluralForm'.",
     "placeholders": {
       "num": {
@@ -410,35 +466,35 @@
     }
   },
   "message.meFromMeToSomeone": {
-    "message": "Я",
+    "message": "Me",
     "description": "One of four different strings are required to accomodate some languages which have specific declensions."
   },
   "message.meFromSomeoneToMe": {
-    "message": "Мені",
+    "message": "Me",
     "description": "One of four different strings are required to accomodate some languages which have specific declensions."
   },
   "message.meBetweenMeAndSomeone": {
-    "message": "Я",
+    "message": "Me",
     "description": "One of four different strings are required to accomodate some languages which have specific declensions."
   },
   "message.meBetweenSomeoneAndMe": {
-    "message": "Я",
+    "message": "Me",
     "description": "One of four different strings are required to accomodate some languages which have specific declensions."
   },
   "message.headerSubject": {
-    "message": "Тема",
+    "message": "subject",
     "description": "Name for the Subject header that is displayed when you click the show details button."
   },
   "message.headerDate": {
-    "message": "Дата",
+    "message": "date",
     "description": "Name for the Date header that is displayed when you click the show details button."
   },
   "message.headerFolder": {
-    "message": "Тека",
+    "message": "folder",
     "description": "Name for the Folder header that is displayed when you click the show details button."
   },
   "involvingTabTitle": {
-    "message": "Повідомлення стосуються $contactName$",
+    "message": "Messages involving $contactName$",
     "description": "This is used when we click on the \"recent conversations\" button in a contact tooltip. This is the title of the tab that opens.",
     "placeholders": {
       "contactName": {
@@ -448,35 +504,35 @@
     }
   },
   "compose.confirmDiscard": {
-    "message": "Ви дійсно хочете відхилити це повідомлення?",
+    "message": "Are you sure you wish to discard this message ?",
     "description": "Confirmation message when discarding a compose draft."
   },
   "compose.attachFiles": {
-    "message": "Вкласти файл(и)",
+    "message": "Attach File(s)",
     "description": "Title of the file picker to attach files to a compose draft."
   },
   "compose.attachedMessage": {
-    "message": "Вкладене Message.eml",
+    "message": "Attached Message.eml",
     "description": "The filename name to use for an attachment when attaching an email."
   },
   "compose.attachment": {
-    "message": "Вкладення",
+    "message": "Attachment",
     "description": "Attachment header when composing a draft."
   },
   "attachments.sizeUnknown": {
-    "message": "Розмір невідомий",
+    "message": "size unknown",
     "description": "The message displayed when an attachment size is unknown."
   },
   "compose.sendAnEmptyMessage": {
-    "message": "Надіслати порожнє повідомлення?",
+    "message": "Send an empty message?",
     "description": "Confirmation message for sending an empty email."
   },
   "compose.sendingMessage": {
-    "message": "Повідомлення надсилається…",
+    "message": "Sending message…",
     "description": "Information text when sending an email."
   },
   "compose.messageSendingSuccess": {
-    "message": "Повідомлення $msgId$ успішно надіслано",
+    "message": "Message $msgId$ sent successfully",
     "description": "Information text for email sent success.",
     "placeholders": {
       "msgId": {
@@ -486,127 +542,165 @@
     }
   },
   "compose.couldntSendTheMessage": {
-    "message": "Не вдається надіслати повідомлення.",
+    "message": "Couldn't send the message.",
     "description": "Information text for when sending email failed."
   },
   "conversation.forwardFillInText": {
-    "message": "Ось розмова, яка може вас зацікавити!",
+    "message": "Here's a conversation I thought you might find interesting!",
     "description": "Text displayed when a conversation is forwarded."
   },
   "compose.messageSendingCanceled": {
-    "message": "Надсилання повідомлення було скасовано.",
+    "message": "Sending the message was canceled.",
     "description": "Information text when sending email was canceled."
   },
   "enigmail.attachmentsNotEncrypted": {
-    "message": "Вкладення не буде зашифровано з використанням inline-PGP.\nНатомість надіслати повідомлення з використанням PGP/MIME?",
+    "message": "Attachments will not be encrypted using inline-PGP.\nInstead send message using PGP/MIME?",
     "description": "For the enigmail plugin to indicate attachments are not encrypted on sending."
   },
   "compose.write": {
-    "message": "Написати...",
+    "message": "Write...",
     "description": "Document title for composing an email in a new tab."
   },
   "between.columnName": {
-    "message": "Учасники",
+    "message": "Between",
     "description": "The displayed name of the between column."
   },
   "between.columnTooltip": {
-    "message": "Клацніть, щоб впорядкувати за учасниками",
+    "message": "Click to sort by participants",
     "description": "The tooltip of the between column."
   },
   "message.at": {
-    "message": "на",
+    "message": "at",
     "description": "Used for concatenation of two strings, e.g. John Doe at http://bugzilla.mozilla.org"
   },
   "enigmail.messageSigned": {
-    "message": "Підписано",
+    "message": "signed",
     "description": "Tag description displayed when a message is signed."
   },
   "enigmail.messageSignedLong": {
-    "message": "Це повідомлення підписане",
+    "message": "This message has been signed",
     "description": "Tooltip displayed when a signature is good and verified."
   },
+  "enigmail.messageBadSignature": {
+    "message": "bad signature",
+    "description": "Tag description displayed when a message is signed but has a bad signature"
+  },
+  "enigmail.messageBadSignatureLong": {
+    "message": "This message has been signed but the signature is bad",
+    "description": "Tooltip displayed when a signature is bad."
+  },
   "enigmail.messageDecrypted": {
-    "message": "Розшифровано",
+    "message": "decrypted",
     "description": "Tag description displayed when a message has been decrypted."
   },
   "enigmail.messageDecryptedLong": {
-    "message": "Це повідомлення розшифроване для його показу",
+    "message": "This message has been decrypted before display",
     "description": "Tooltip displayed when a message has been decrypted."
   },
+  "openpgp.signedByLabel": {
+    "message": "Signed by:",
+    "description": "Label displayed for a SMIME certificate to label who it was signed by."
+  },
+  "openpgp.signedByEmailLabel": {
+    "message": "Email address:",
+    "description": "Label displayed for a SMIME certificate to label who it was signed by."
+  },
+  "openpgp.certificateIssuedByLabel": {
+    "message": "Certificate issued by:",
+    "description": "Label displayed for a SMIME certificate to label who it was signed by."
+  },
   "compose.addCc": {
-    "message": "Копія",
+    "message": "add cc",
     "description": "Link to click to add a cc when composing messages."
   },
   "compose.addBcc": {
-    "message": "Прихована копія",
+    "message": "add bcc",
     "description": "Link to click to add bcc when composing messages."
   },
   "compose.addAttachment": {
-    "message": "Додати вкладення",
+    "message": "add attachments",
     "description": "Link to add an attachment when composing messages."
   },
   "compose.removeAttachment": {
-    "message": "Вилучити",
+    "message": "remove",
     "description": "Link to remove an attachment when composing messages."
   },
   "compose.fieldBcc": {
-    "message": "Прихована копія:",
+    "message": "bcc:",
     "description": "Field name for the bcc field when composing messages."
   },
   "compose.fieldSubject": {
-    "message": "Тема:",
+    "message": "subject:",
     "description": "Field name for the subject field when composing messages."
   },
   "compose.editField": {
-    "message": "Редагувати",
+    "message": "edit",
     "description": "Link title to edit a particular field when composing messages."
   },
   "compose.send": {
-    "message": "Надіслати",
+    "message": "send",
     "description": "Button name to send a message."
   },
   "compose.sendArchive": {
-    "message": "Надіслати й архівувати",
+    "message": "send &amp; archive",
     "description": "Button name to send and archive a message."
   },
   "compose.save": {
-    "message": "Зберегти",
+    "message": "save",
     "description": "Button name to save a message as draft."
   },
   "compose.discard": {
-    "message": "Відхилити",
+    "message": "discard",
     "description": "Button name to discard a message draft."
   },
   "compose.mostFrequentContacts": {
-    "message": "Найчастіші контакти:",
+    "message": "Most frequently emailed contacts:",
     "description": "Field name for showing the most frequently used contacts."
   },
   "compose.showMore": {
-    "message": "Показати більше…",
+    "message": "show more…",
     "description": "Show more link for showing more contacts."
   },
   "enigmail.encrypt": {
-    "message": "Шифрувати",
+    "message": "encrypt",
     "description": "Checkbox label for specifying encryption of a message to be sent."
   },
   "enigmail.sign": {
-    "message": "Підписати",
+    "message": "sign",
     "description": "Checkbox label for specifying signing of a message to be sent."
   },
   "enigmail.unknownGood": {
-    "message": "Невідомий хороший підпис",
+    "message": "unknown good signature",
     "description": "Tooltip displayed when a signature is good but unverified."
   },
   "options.undoCustomizations": {
-    "message": "Відновити параметри",
+    "message": "Undo Customizations",
     "description": "Description for the undo customizations button."
   },
   "options.undoCustomizations.tooltip": {
-    "message": "Відновити параметри, що були при першому встановленні.",
+    "message": "Undo the customizations applied when originally installed.",
     "description": "Tooltip for the undo customizations button."
   },
   "options.undoCustomizations.finished": {
-    "message": "Відновлення параметрів виконано",
+    "message": "Undo Customizations finished",
     "description": "Message displayed once the customizations have been uninstalled."
+  },
+  "compose.reply_header_citation": {
+    "message": "On $date$ $time$, $author$ wrote:",
+    "description": "Citation header when replying to a message.",
+    "placeholders": {
+      "author": {
+        "content": "$1",
+        "example": "John Smith"
+      },
+      "date": {
+        "content": "$2",
+        "example": "12/01/21"
+      },
+      "time": {
+        "content": "$3",
+        "example": "12:14"
+      }
+    }
   }
 }
