@@ -72,7 +72,7 @@
     "description": "Options - title for archive/delete behavior."
   },
   "options.operate_on_conversations_desc": {
-    "message": "Кнопки панелі повинні архівувати й видаляти розмови цілком, а не лише вибрані повідомлення.",
+    "message": "Кнопки панелі мають архівувати й видаляти розмови цілком, а не лише вибрані повідомлення.",
     "description": "Options - description for archive/delete behavior."
   },
   "options.extra_attachments_title": {
@@ -80,7 +80,7 @@
     "description": "Options - title for attachment settings."
   },
   "options.extra_attachments_desc": {
-    "message": "В окремих випадках Thunderbird не зможе розпізнавати деякі вкладення. Цей параметр дозволяє обійти цей недолік Thunderbird і показати всі можливі вкладення. Використовуйте комбіновано з додатком Show All Body Parts.",
+    "message": "Іноді Thunderbird не зможе розпізнавати деякі вкладення. Цей параметр дозволяє обійти цей недолік і показати всі можливі вкладення. Використовуйте разом з додатком Show All Body Parts.",
     "description": "Options - description for attachment settings."
   },
   "options.hide_quick_reply_title": {
@@ -112,7 +112,7 @@
     "description": "Options - title for debugging setting."
   },
   "options.debugging_desc": {
-    "message": "Активувати вивід зневадження в системній консолі та консолі помилок. Ця дія генеруватиме багато повідомлень.",
+    "message": "Активувати результати зневадження в системній консолі та консолі помилок. Ця дія генеруватиме багато повідомлень.",
     "description": "Options - description for debugging setting."
   },
   "assistant.title": {
