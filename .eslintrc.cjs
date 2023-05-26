@@ -26,11 +26,11 @@ module.exports = {
         webextensions: true,
       },
       excludedFiles: [
-        "addon/content/modules/**",
+        "addon/content/modules/browserSim.js",
         "addon/content/stubGlobals.js",
         "addon/experiment-api/**",
       ],
-      files: ["addon/**/*.js*"],
+      files: ["addon/**/*.*js*"],
       parserOptions: {
         sourceType: "module",
       },
@@ -67,12 +67,15 @@ module.exports = {
       files: "addon/tests/*.test.js*",
     },
   ],
+  // Override mozilla/recommended to get private class fields
+  parserOptions: {
+    ecmaVersion: 13,
+  },
   plugins: ["mozilla", "html", "jsdoc", "json", "react"],
   root: true,
   rules: {
     "jsdoc/check-tag-names": "error",
     "jsdoc/check-types": "error",
-    "jsdoc/newline-after-description": "error",
     "jsdoc/no-undefined-types": ["error", { definedTypes: ["MessageHeader"] }],
     "jsdoc/require-jsdoc": [
       "error",
@@ -85,6 +88,7 @@ module.exports = {
     "jsdoc/require-returns": "off",
     "jsdoc/require-returns-description": "off",
     "jsdoc/require-returns-type": "error",
+    "jsdoc/tag-lines": ["error", "never", { startLines: 1 }],
     "jsdoc/valid-types": "error",
     // We want to check the global scope everywhere.
     "no-unused-vars": [
