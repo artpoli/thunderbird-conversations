@@ -4,6 +4,12 @@
 
 /* global ExtensionCommon, Services */
 
+ChromeUtils.defineModuleGetter(
+  this,
+  "MailE10SUtils",
+  "resource:///modules/MailE10SUtils.jsm"
+);
+
 /**
  * @typedef nsIMsgDBHdr
  * @see https://searchfox.org/comm-central/rev/9d9fac50cddfd9606a51c4ec3059728c33d58028/mailnews/base/public/nsIMsgHdr.idl#14
@@ -54,12 +60,30 @@ var convMsgWindow = class extends ExtensionCommon.ExtensionAPI {
   getAPI(context) {
     const { extension } = context;
     const { windowManager } = extension;
+
+    function observer(subject, topic, data) {
+      if (topic != "remote-content-blocked") {
+        return;
+      }
+      for (let [iframeName, listenerData] of remoteContentListeners.entries()) {
+        if (listenerData.tabId != null) {
+          let tabObject = context.extension.tabManager.get(listenerData.tabId);
+          let contentWin = tabObject.nativeTab.chromeBrowser.contentWindow;
+          let contentDoc = contentWin.multiMessageBrowser.contentDocument;
+          let elements = contentDoc.getElementsByClassName(iframeName);
+          if (elements.length && elements[0]?.browsingContext.id == data) {
+            listenerData.fire.async();
+          }
+        }
+      }
+    }
+
     return {
       convMsgWindow: {
         async maybeReloadMultiMessage(tabId) {
           let tabObject = context.extension.tabManager.get(tabId);
           let contentWin = tabObject.nativeTab.chromeBrowser.contentWindow;
-          contentWin.webBrowser?.reload();
+          contentWin.multiMessageBrowser?.reload();
         },
         async openNewWindow(url, params) {
           const win = getWindowFromId();
@@ -154,33 +178,6 @@ var convMsgWindow = class extends ExtensionCommon.ExtensionAPI {
           context,
           name: "convMsgWindow.onMsgHasRemoteContent",
           register(fire, tabId, winId, iframeName) {
-            function observer(subject, topic, data) {
-              if (topic != "remote-content-blocked") {
-                return;
-              }
-              for (let [
-                iframeName,
-                listenerData,
-              ] of remoteContentListeners.entries()) {
-                if (listenerData.tabId != null) {
-                  let tabObject = context.extension.tabManager.get(tabId);
-                  let contentWin =
-                    tabObject.nativeTab.chromeBrowser.contentWindow;
-                  // This should be the correct code, but Thunderbird reports
-                  // the parent browsingContext rather than the iframe.
-                  // See https://bugzilla.mozilla.org/show_bug.cgi?id=1818950
-                  let contentDoc = contentWin.webBrowser.contentDocument;
-                  let elements = contentDoc.getElementsByClassName(iframeName);
-                  if (
-                    elements.length &&
-                    elements[0]?.browsingContext.id == data
-                  ) {
-                    listenerData.fire.async();
-                  }
-                }
-              }
-            }
-
             if (remoteContentListeners.size == 0) {
               Services.obs.addObserver(observer, "remote-content-blocked");
             }
@@ -409,6 +406,25 @@ function summarizeThreadHandler(contentWin, tabId, context) {
       return;
     }
 
+    async function maybeLoadMultiMessagePage() {
+      const multiMessageURI =
+        "chrome://messenger/content/multimessageview.xhtml";
+      if (
+        contentWin.multiMessageBrowser?.documentURI?.spec != multiMessageURI
+      ) {
+        await new Promise((resolve) => {
+          contentWin.multiMessageBrowser.addEventListener("load", resolve, {
+            once: true,
+            capture: true,
+          });
+          MailE10SUtils.loadURI(
+            contentWin.multiMessageBrowser,
+            multiMessageURI
+          );
+        });
+      }
+    }
+
     let numSelected = contentWin.gDBView.numSelected;
     if (numSelected == 0) {
       threadPane._oldOnSelect(event);
@@ -421,7 +437,7 @@ function summarizeThreadHandler(contentWin, tabId, context) {
         contentWin.threadTree.selectedIndices[0]
       ) == "dummy"
     ) {
-      threadPane._oldOnSelect(event);
+      maybeLoadMultiMessagePage().then(() => threadPane._oldOnSelect(event));
       return;
     }
 
@@ -437,7 +453,7 @@ function summarizeThreadHandler(contentWin, tabId, context) {
     let firstThreadId = getThreadId(msgHdrs[0]);
     if (msgHdrIsRssOrNews(msgHdrs[0])) {
       // If we have any RSS or News messages, defer to Thunderbird's view.
-      threadPane._oldOnSelect(event);
+      maybeLoadMultiMessagePage().then(() => threadPane._oldOnSelect(event));
       return;
     }
     for (let i = 1; i < msgHdrs.length; i++) {
@@ -447,19 +463,19 @@ function summarizeThreadHandler(contentWin, tabId, context) {
       ) {
         // This is a RSS, News or multi-thread selection, so defer to
         // Thunderbird's views.
-        threadPane._oldOnSelect(event);
+        maybeLoadMultiMessagePage().then(() => threadPane._oldOnSelect(event));
         return;
       }
     }
 
-    // As a message will now have been displayed, don't keep the start page open.
     contentWin.messagePane._keepStartPageOpen = false;
-
-    if (contentWin.webBrowser?.documentURI?.spec != STUB_URI) {
-      contentWin.messagePane.displayWebPage(
-        "chrome://conversations/content/stub.html"
-      );
+    contentWin.messagePane.clearWebPage();
+    contentWin.messagePane.clearMessage();
+    // As a message will now have been displayed, don't keep the start page open.
+    if (contentWin.multiMessageBrowser?.documentURI?.spec != STUB_URI) {
+      MailE10SUtils.loadURI(contentWin.multiMessageBrowser, STUB_URI);
     }
+    contentWin.multiMessageBrowser.hidden = false;
 
     // Should cancel most intempestive view refreshes, but only after we
     //  made sure the multimessage pane is shown. The logic behind this
