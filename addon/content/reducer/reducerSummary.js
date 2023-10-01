@@ -146,7 +146,11 @@ export const summaryActions = {
           await dispatch(
             messageActions.setPrintBody({
               id: msg.id,
-              printBody: await browser.conversations.bodyAsText(winId, msg.id),
+              printBody: await browser.conversations.bodyAsText({
+                winId,
+                tabId: state.summary.tabId,
+                msgId: msg.id,
+              }),
             })
           );
         }
@@ -186,10 +190,12 @@ export const summaryActions = {
       }
 
       await browser.convCalendar.onMessageStreamed(
+        getState().summary.winId,
         getState().summary.tabId,
         id
       );
       await browser.convOpenPgp.handleMessageStreamed(
+        getState().summary.winId,
         getState().summary.tabId,
         id
       );

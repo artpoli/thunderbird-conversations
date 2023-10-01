@@ -15,41 +15,36 @@ ChromeUtils.defineModuleGetter(
  * @see https://searchfox.org/comm-central/rev/9d9fac50cddfd9606a51c4ec3059728c33d58028/mailnews/base/public/nsIMsgHdr.idl#14
  */
 
-/**
- * Handles observing updates on windows.
- */
-class WindowObserver {
-  constructor(windowManager, callback, context) {
-    this._windowManager = windowManager;
-    this._callback = callback;
-    this._context = context;
+function msgWinApigetWinBrowserFromIds(context, winId, tabId) {
+  if (!tabId) {
+    // windowManager only recognises Thunderbird windows, so we can't
+    // use getWindowFromId.
+    let win = Services.wm.getOuterWindowWithId(winId);
+
+    return {
+      // windowManager only recognises Thunderbird windows, so we can't
+      // use getWindowFromId.
+      win,
+      msgBrowser: win.document.getElementById("multiMessageBrowser"),
+    };
   }
 
-  observe(subject, topic, data) {
-    if (topic != "domwindowopened") {
-      return;
-    }
-    let win;
-    if (subject && "QueryInterface" in subject) {
-      // Supports pre-TB 70.
-      win = subject.QueryInterface(Ci.nsIDOMWindow).window;
-    } else {
-      win = subject;
-    }
-    waitForWindow(win).then(() => {
-      if (
-        win.document.location != "chrome://messenger/content/messenger.xul" &&
-        win.document.location != "chrome://messenger/content/messenger.xhtml"
-      ) {
-        return;
-      }
-      this._callback(
-        subject.window,
-        this._windowManager.getWrapper(subject.window).id,
-        this._context
-      );
-    });
+  let tabObject = context.extension.tabManager.get(tabId);
+  if (!tabObject.nativeTab) {
+    throw new Error("Failed to find tab");
   }
+  let win = Cu.getGlobalForObject(tabObject.nativeTab);
+  if (!win) {
+    throw new Error("Failed to extract window from tab");
+  }
+  if (tabObject.nativeTab.mode.type == "contentTab") {
+    return { win, msgBrowser: tabObject.browser };
+  }
+  return {
+    win,
+    msgBrowser:
+      tabObject.nativeTab.chromeBrowser.contentWindow.multiMessageBrowser,
+  };
 }
 
 let msgsChangedListeners = new Map();
@@ -58,22 +53,20 @@ let remoteContentListeners = new Map();
 /* exported convMsgWindow */
 var convMsgWindow = class extends ExtensionCommon.ExtensionAPI {
   getAPI(context) {
-    const { extension } = context;
-    const { windowManager } = extension;
-
     function observer(subject, topic, data) {
       if (topic != "remote-content-blocked") {
         return;
       }
       for (let [iframeName, listenerData] of remoteContentListeners.entries()) {
-        if (listenerData.tabId != null) {
-          let tabObject = context.extension.tabManager.get(listenerData.tabId);
-          let contentWin = tabObject.nativeTab.chromeBrowser.contentWindow;
-          let contentDoc = contentWin.multiMessageBrowser.contentDocument;
-          let elements = contentDoc.getElementsByClassName(iframeName);
-          if (elements.length && elements[0]?.browsingContext.id == data) {
-            listenerData.fire.async();
-          }
+        let { msgBrowser } = msgWinApigetWinBrowserFromIds(
+          context,
+          listenerData.winId,
+          listenerData.tabId
+        );
+        let contentDoc = msgBrowser.contentDocument;
+        let elements = contentDoc.getElementsByClassName(iframeName);
+        if (elements.length && elements[0]?.browsingContext.id == data) {
+          listenerData.fire.async();
         }
       }
     }
@@ -91,13 +84,9 @@ var convMsgWindow = class extends ExtensionCommon.ExtensionAPI {
           let features = "chrome,resizable,titlebar,minimizable";
           win.openDialog(url, "_blank", features, args);
         },
-        async fireLoadCompleted(winId) {
-          // let win = getWindowFromId(winId);
-          // win.gMessageDisplay.onLoadCompleted();
-        },
         async print(winId, iframeId) {
           let win = getWindowFromId(winId);
-          let multimessage = win.document.getElementById("multimessage");
+          let multimessage = win.document.getElementById("multiMessageBrowser");
           let messageIframe =
             multimessage.contentDocument.getElementsByClassName(iframeId)[0];
           win.PrintUtils.startPrintWindow(messageIframe.browsingContext, {
@@ -164,12 +153,18 @@ var convMsgWindow = class extends ExtensionCommon.ExtensionAPI {
             // Or maybe a browser underneath it?
             waitForWindow(tabObject.nativeTab.chromeBrowser.contentWindow).then(
               () => {
+                contentWin.document
+                  .getElementById("multiMessageBrowser")
+                  ?.setAttribute("context", "browserContext");
                 summarizeThreadHandler(contentWin, tabId, context);
               }
             );
             return function () {
               let threadPane = contentWin.threadPane;
               threadPane._onSelect = threadPane._oldOnSelect;
+              contentWin.document
+                .getElementById("multiMessageBrowser")
+                ?.setAttribute("context", "aboutPagesContext");
               delete threadPane._oldOnSelect;
             };
           },
@@ -190,42 +185,10 @@ var convMsgWindow = class extends ExtensionCommon.ExtensionAPI {
             };
           },
         }).api(),
-        onPrint: new ExtensionCommon.EventManager({
-          context,
-          name: "convMsgWindow.onPrint",
-          register(fire) {
-            if (printListeners.size == 0) {
-              printWindowListener = new WindowObserver(
-                windowManager,
-                printPatch,
-                context
-              );
-              monkeyPatchAllWindows(windowManager, printPatch, context);
-              Services.ww.registerNotification(printWindowListener);
-            }
-            printListeners.add(fire);
-
-            return function () {
-              printListeners.delete(fire);
-              if (printListeners.size == 0) {
-                Services.ww.unregisterNotification(printWindowListener);
-                monkeyPatchAllWindows(windowManager, (win) => {
-                  win.controllers.removeController(
-                    win.conversationsPrintController
-                  );
-                  delete win.conversationsPrintController;
-                });
-              }
-            };
-          },
-        }).api(),
       },
     };
   }
 };
-
-let printListeners = new Set();
-let printWindowListener = null;
 
 function getWindowFromId(windowManager, context, id) {
   return id !== null && id !== undefined
@@ -250,109 +213,6 @@ function waitForWindow(win) {
     }
   });
 }
-
-function monkeyPatchAllWindows(windowManager, callback, context) {
-  for (const win of Services.wm.getEnumerator("mail:3pane")) {
-    waitForWindow(win).then(() => {
-      callback(win, windowManager.getWrapper(win).id, context);
-    });
-  }
-}
-
-const printPatch = (win, winId, context) => {
-  let tabmail = win.document.getElementById("tabmail");
-  var PrintController = {
-    supportsCommand(command) {
-      switch (command) {
-        case "button_print":
-        case "cmd_print":
-          return (
-            (tabmail.selectedTab.mode?.type == "folder" &&
-              tabmail.selectedTab.messageDisplay.visible) ||
-            (tabmail.selectedTab.mode?.type == "contentTab" &&
-              tabmail.selectedBrowser?.browsingContext.currentURI.spec.startsWith(
-                "chrome://conversations/content/stub.html"
-              ))
-          );
-        default:
-          return false;
-      }
-    },
-    isCommandEnabled(command) {
-      switch (command) {
-        case "button_print":
-        case "cmd_print":
-          if (tabmail.selectedTab.mode?.type == "folder") {
-            let numSelected = win.gFolderDisplay.selectedCount;
-            // TODO: Allow printing multiple selected messages if TB allows it.
-            if (numSelected != 1) {
-              return false;
-            }
-            if (
-              !win.gFolderDisplay.getCommandStatus(
-                Ci.nsMsgViewCommandType.cmdRequiringMsgBody
-              )
-            ) {
-              return false;
-            }
-
-            // Check if we have a collapsed thread selected and are summarizing it.
-            // If so, selectedIndices.length won't match numSelected. Also check
-            // that we're not displaying a message, which handles the case
-            // where we failed to summarize the selection and fell back to
-            // displaying a message.
-            if (
-              win.gFolderDisplay.selectedIndices.length != numSelected &&
-              command != "cmd_applyFiltersToSelection" &&
-              win.gDBView &&
-              win.gDBView.currentlyDisplayedMessage == win.nsMsgViewIndex_None
-            ) {
-              return false;
-            }
-            return true;
-          }
-          // else, must be a content tab, so return false for now.
-          return false;
-        default:
-          return false;
-      }
-    },
-    async doCommand(command) {
-      switch (command) {
-        case "button_print":
-        case "cmd_print":
-          let id = (
-            await context.extension.messageManager.convert(
-              win.gFolderDisplay.selectedMessage
-            )
-          ).id;
-          for (let listener of printListeners) {
-            listener.async(winId, id);
-          }
-          break;
-      }
-    },
-    QueryInterface: ChromeUtils.generateQI(["nsIController"]),
-  };
-
-  let toolbox = win.document.getElementById("mail-toolbox");
-  // Use this as a proxy for if mail-startup-done has been called.
-  if (toolbox.customizeDone) {
-    win.controllers.insertControllerAt(0, PrintController);
-  } else {
-    // The main window is loaded when the monkey-patch is applied
-    let observer = {
-      observe(msgWin, aTopic, aData) {
-        if (msgWin == win) {
-          Services.obs.removeObserver(observer, "mail-startup-done");
-          win.controllers.insertControllerAt(0, PrintController);
-        }
-      },
-    };
-    Services.obs.addObserver(observer, "mail-startup-done");
-  }
-  win.conversationsPrintController = PrintController;
-};
 
 function isSelectionExpanded(contentWin) {
   const msgIndex = contentWin.threadTree.selectedIndices.length
@@ -444,6 +304,12 @@ function summarizeThreadHandler(contentWin, tabId, context) {
     let msgs = [];
     let msgHdrs = contentWin.gDBView.getSelectedMsgHdrs();
 
+    if (msgHdrs.length == 1 && msgHdrIsRssOrNews(msgHdrs[0])) {
+      // If we have any RSS or News messages, defer to Thunderbird's view.
+      maybeLoadMultiMessagePage().then(() => threadPane._oldOnSelect(event));
+      return;
+    }
+
     let getThreadId = function (msgHdr) {
       return contentWin.gDBView
         .getThreadContainingMsgHdr(msgHdr)
@@ -451,18 +317,13 @@ function summarizeThreadHandler(contentWin, tabId, context) {
     };
 
     let firstThreadId = getThreadId(msgHdrs[0]);
-    if (msgHdrIsRssOrNews(msgHdrs[0])) {
-      // If we have any RSS or News messages, defer to Thunderbird's view.
-      maybeLoadMultiMessagePage().then(() => threadPane._oldOnSelect(event));
-      return;
-    }
     for (let i = 1; i < msgHdrs.length; i++) {
-      if (
-        msgHdrIsRssOrNews(msgHdrs[i]) ||
-        getThreadId(msgHdrs[i]) != firstThreadId
-      ) {
-        // This is a RSS, News or multi-thread selection, so defer to
-        // Thunderbird's views.
+      // If this is multi-thread selection, defer to Thunderbird's views.
+      //
+      // We intentionally do not skip RSS/news messages here as some people
+      // have managed to get Thunderbird set up to have them threaded (#2016).
+      // Though this is supported on a totally un-supported basis.
+      if (getThreadId(msgHdrs[i]) != firstThreadId) {
         maybeLoadMultiMessagePage().then(() => threadPane._oldOnSelect(event));
         return;
       }
