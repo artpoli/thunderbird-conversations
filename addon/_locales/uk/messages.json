@@ -331,7 +331,10 @@
     "message": "Завжди показувати зовнішній вміст від $fromEmail$",
     "description": "Button title to always show remote content.",
     "placeholders": {
-      "fromEmail": { "content": "$1", "example": "me@example.com" }
+      "fromEmail": {
+        "content": "$1",
+        "example": "me@example.com"
+      }
     }
   },
   "action.editDraft": {
@@ -381,7 +384,12 @@
   "tags.inFolder": {
     "message": "$folderName$",
     "description": "Folder indication for the jump to folder tag.",
-    "placeholders": { "folderName": { "content": "$1", "example": "Sent" } }
+    "placeholders": {
+      "folderName": {
+        "content": "$1",
+        "example": "Sent"
+      }
+    }
   },
   "tags.removeButton": {
     "message": "Вилучити тег",
@@ -450,7 +458,12 @@
   "attachments.numAttachments": {
     "message": "Один вкладений файл;$num$ вкладені файли;$num$ вкладених файлів",
     "description": "The description used for how many attachments there are. This should take the form of a plural form, see also 'pluralForm'.",
-    "placeholders": { "num": { "content": "$1", "example": "2" } }
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
   },
   "message.meFromMeToSomeone": {
     "message": "Я",
@@ -484,7 +497,10 @@
     "message": "Повідомлення стосуються $contactName$",
     "description": "This is used when we click on the \"recent conversations\" button in a contact tooltip. This is the title of the tab that opens.",
     "placeholders": {
-      "contactName": { "content": "$1", "example": "John Smith" }
+      "contactName": {
+        "content": "$1",
+        "example": "John Smith"
+      }
     }
   },
   "compose.confirmDiscard": {
@@ -518,7 +534,12 @@
   "compose.messageSendingSuccess": {
     "message": "Повідомлення $msgId$ успішно надіслано",
     "description": "Information text for email sent success.",
-    "placeholders": { "msgId": { "content": "$1", "example": "1234" } }
+    "placeholders": {
+      "msgId": {
+        "content": "$1",
+        "example": "1234"
+      }
+    }
   },
   "compose.couldntSendTheMessage": {
     "message": "Не вдається надіслати повідомлення.",
@@ -668,121 +689,130 @@
     "message": "Повідомлення від $author$, $date$ $time$:",
     "description": "Citation header when replying to a message.",
     "placeholders": {
-      "author": { "content": "$1", "example": "John Smith" },
-      "date": { "content": "$2", "example": "12/01/21" },
-      "time": { "content": "$3", "example": "12:14" }
+      "author": {
+        "content": "$1",
+        "example": "John Smith"
+      },
+      "date": {
+        "content": "$2",
+        "example": "12/01/21"
+      },
+      "time": {
+        "content": "$3",
+        "example": "12:14"
+      }
     }
   },
   "calendar.imipAcceptButton.label": {
-    "message": "Прийняти",
+    "message": "Accept",
     "description": "Calendar invite accept button."
   },
   "calendar.imipAcceptButton.tooltip": {
-    "message": "Прийняти запрошення на подію",
+    "message": "Accept event invitation",
     "description": "Calendar invite accept button tooltip."
   },
   "calendar.imipAcceptRecurrencesButton.label": {
-    "message": "Прийняти все",
+    "message": "Accept all",
     "description": "Calendar invite accept button."
   },
   "calendar.imipAcceptRecurrencesButton.tooltip": {
-    "message": "Прийняти запрошення на подію для всіх випадків події",
+    "message": "Accept event invitation for all occurrences of the event",
     "description": "Calendar invite accept button tooltip."
   },
   "calendar.imipAddButton.label": {
-    "message": "Додати",
+    "message": "Add",
     "description": "Calendar invite update button."
   },
   "calendar.imipAddButton.tooltip": {
-    "message": "Додати подію в календар",
+    "message": "Add the event to the calendar",
     "description": "Calendar invite update button tooltip."
   },
   "calendar.imipDeclineButton.label": {
-    "message": "Відхилити",
+    "message": "Decline",
     "description": "Calendar invite decline button."
   },
   "calendar.imipDeclineButton.tooltip": {
-    "message": "Відхилити запрошення на подію",
+    "message": "Decline event invitation",
     "description": "Calendar invite decline button tooltip."
   },
   "calendar.imipDeclineRecurrencesButton.label": {
-    "message": "Відхилити все",
+    "message": "Decline all",
     "description": "Calendar invite decline button."
   },
   "calendar.imipDeclineRecurrencesButton.tooltip": {
-    "message": "Відхилити запрошення на подію для всіх випадків події",
+    "message": "Decline event invitation for all occurrences of the event",
     "description": "Calendar invite decline button tooltip."
   },
   "calendar.imipDeclineCounterButton.label": {
-    "message": "Відхилити",
+    "message": "Decline",
     "description": "Calendar invite decline button."
   },
   "calendar.imipDeclineCounterButton.tooltip": {
-    "message": "Відхилити зустрічну пропозицію",
+    "message": "Decline the counter proposal",
     "description": "Calendar invite decline button tooltip."
   },
   "calendar.imipDeleteButton.label": {
-    "message": "Видалити",
+    "message": "Delete",
     "description": "Calendar invite update button."
   },
   "calendar.imipDeleteButton.tooltip": {
-    "message": "Видалити з календаря",
+    "message": "Delete from calendar",
     "description": "Calendar invite update button tooltip."
   },
   "calendar.imipDetailsButton.label": {
-    "message": "Подробиці…",
+    "message": "Details…",
     "description": "Calendar invite details button."
   },
   "calendar.imipDetailsButton.tooltip": {
-    "message": "Показати подробиці події",
+    "message": "Show event details",
     "description": "Calendar invite details button tooltip."
   },
   "calendar.imipReconfirmButton.label": {
-    "message": "Підтвердити заново",
+    "message": "Reconfirm",
     "description": "Calendar invite update button."
   },
   "calendar.imipReconfirmButton.tooltip": {
-    "message": "Надсилає повторне підтвердження організатору",
+    "message": "Sends a reconfirmation to the organizer",
     "description": "Calendar invite update button tooltip."
   },
   "calendar.imipRescheduleButton.label": {
-    "message": "Змінити розклад",
+    "message": "Reschedule",
     "description": "Calendar invite tentative button."
   },
   "calendar.imipRescheduleButton.tooltip": {
-    "message": "Змінити розклад події",
+    "message": "Reschedule the event",
     "description": "Calendar invite tentative button tooltip."
   },
   "calendar.imipTentativeButton.label": {
-    "message": "Попередньо",
+    "message": "Tentative",
     "description": "Calendar invite tentative button."
   },
   "calendar.imipTentativeButton.tooltip": {
-    "message": "Попередньо прийняти запрошення на подію",
+    "message": "Accept event invitation tentatively",
     "description": "Calendar invite tentative button tooltip."
   },
   "calendar.imipTentativeRecurrencesButton.label": {
-    "message": "Попередньо все",
+    "message": "Tentative all",
     "description": "Calendar invite tentative button."
   },
   "calendar.imipTentativeRecurrencesButton.tooltip": {
-    "message": "Попередньо прийняти запрошення на подію для всіх випадків події",
+    "message": "Accept event invitation tentatively for all occurrences of the event",
     "description": "Calendar invite tentative button tooltip."
   },
   "calendar.imipUpdateButton.label": {
-    "message": "Прийняти",
+    "message": "Update",
     "description": "Calendar invite update button."
   },
   "calendar.imipUpdateButton.tooltip": {
-    "message": "Прийняти",
+    "message": "Update event in calendar",
     "description": "Calendar invite update button tooltip."
   },
   "calendar.imipGoToCalendarButton.label": {
-    "message": "Календар",
+    "message": "Calendar",
     "description": "Calendar invite update button."
   },
   "calendar.imipGoToCalendarButton.tooltip": {
-    "message": "Перейти на вкладку календаря",
+    "message": "Go to the calendar tab",
     "description": "Calendar invite update button tooltip."
   }
 }
