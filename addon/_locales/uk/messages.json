@@ -92,7 +92,7 @@
     "description": "Options - description for hiding the quick reply display."
   },
   "options.disable_between_column_title": {
-    "message": "Disable Between Column",
+    "message": "Вимкнути стовпчик \"Учасники\"",
     "description": "Options - title for disabling the between column."
   },
   "options.disable_between_column_desc": {
@@ -420,7 +420,7 @@
     "description": "Tooltip displayed for the download button of an attachment."
   },
   "attachments.delete.warning": {
-    "message": "The following attachments will be permanently deleted from this message:\n$attachmentNames$\nThis action cannot be undone. Do you wish to continue?",
+    "message": "Зазначені вкладення будуть остаточно видалені з цього повідомлення:\n$attachmentNames$\nЦю дію неможливо скасувати. Бажаєте продовжити?",
     "description": "Warning message displayed when attempting to delete an attachment.",
     "placeholders": {
       "attachmentNames": {
