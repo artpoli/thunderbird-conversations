@@ -1,5 +1,4 @@
 import globals from "globals";
-import jsdoc from "eslint-plugin-jsdoc";
 import json from "eslint-plugin-json";
 import react from "eslint-plugin-react";
 import importPlugin from "eslint-plugin-import";
@@ -85,6 +84,9 @@ export default [
         version: "detect",
       },
     },
+    rules: {
+      "react/prop-types": "off",
+    },
   },
   {
     files: ["**/*.json"],
@@ -129,14 +131,13 @@ export default [
   },
   {
     files: ["**/*.{js,mjs}"],
-    plugins: { jsdoc },
     rules: {
       "jsdoc/check-tag-names": "error",
       "jsdoc/check-types": "error",
       // "jsdoc/newline-after-description": "error",
       "jsdoc/no-undefined-types": [
         "error",
-        { definedTypes: ["MessageHeader"] },
+        { definedTypes: ["MessageHeader", "NodeListOf"] },
       ],
       "jsdoc/require-jsdoc": [
         "error",
@@ -162,6 +163,9 @@ export default [
         },
       ],
       "no-undef": "error",
+    },
+    settings: {
+      jsdoc: { mode: "typescript" },
     },
   },
   {

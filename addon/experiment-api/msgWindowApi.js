@@ -327,9 +327,16 @@ function summarizeThreadHandler(contentWin, tabId, context) {
       }
     }
 
-    contentWin.messagePane._keepStartPageOpen = false;
-    contentWin.messagePane.clearWebPage();
-    contentWin.messagePane.clearMessage();
+    // Bug 1923206 rewrote the messagePane code and added `multiMessageFindbar`
+    // we use that as a proxy for "is this the latest", since `clearAll` already
+    // existed previously.
+    if ("multiMessageFindbar" in contentWin.messagePane) {
+      contentWin.messagePane.clearAll({ alwaysClearWebBrowser: true });
+    } else {
+      contentWin.messagePane._keepStartPageOpen = false;
+      contentWin.messagePane.clearWebPage();
+      contentWin.messagePane.clearMessage();
+    }
     // As a message will now have been displayed, don't keep the start page open.
     if (contentWin.multiMessageBrowser?.documentURI?.spec != STUB_URI) {
       MailE10SUtils.loadURI(contentWin.multiMessageBrowser, STUB_URI);
