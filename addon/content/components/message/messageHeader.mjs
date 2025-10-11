@@ -4,11 +4,9 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { ContactDetail } from "../contactDetail.mjs";
 import { messageActions } from "../../reducer/reducerMessages.mjs";
 import { MessageHeaderOptions } from "./messageHeaderOptions.mjs";
 import { MessageTags, SpecialMessageTags } from "./messageTags.mjs";
-import { SvgIcon } from "../svgIcon.mjs";
 
 /**
  * Normalize a contact into a string (used for i18n formatting).
@@ -147,7 +145,7 @@ export function DetailedContactLabel({ contact, className, msgId }) {
   return React.createElement(
     HoverFade,
     {
-      popup: React.createElement(ContactDetail, {
+      popup: React.createElement("contact-detail", {
         name: contact.name,
         email: contact.displayEmail,
         msgId,
@@ -194,7 +192,7 @@ export function ContactLabel({ contact, className, msgId }) {
   return React.createElement(
     HoverFade,
     {
-      popup: React.createElement(ContactDetail, {
+      popup: React.createElement("contact-detail", {
         name: contact.name,
         email: contact.displayEmail,
         msgId,
@@ -249,7 +247,6 @@ function Avatar({ url, initials, style }) {
  * @param {object} props
  * @param {object[]} props.bcc
  * @param {object[]} props.cc
- * @param {boolean} props.overrideDarkMode
  * @param {Function} props.dispatch
  * @param {string} props.date
  * @param {boolean} props.detailsShowing
@@ -273,7 +270,6 @@ export function MessageHeader({
   expanded,
   from,
   id,
-  overrideDarkMode,
   dispatch,
   bcc,
   cc,
@@ -370,7 +366,7 @@ export function MessageHeader({
           title: starTitle,
           onClick: onClickStar,
         },
-        React.createElement(SvgIcon, { ariaHidden: true, hash: "star" })
+        React.createElement("svg-icon", { "aria-hidden": true, hash: "star" })
       ),
       !!from &&
         React.createElement(
@@ -423,7 +419,6 @@ export function MessageHeader({
     ),
     React.createElement(MessageHeaderOptions, {
       dispatch,
-      overrideDarkMode,
       date,
       detailsShowing,
       expanded,

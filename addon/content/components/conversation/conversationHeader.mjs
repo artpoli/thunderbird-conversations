@@ -2,104 +2,280 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import React from "react";
-import * as ReactRedux from "react-redux";
-import PropTypes from "prop-types";
 import { messageActions } from "../../reducer/reducerMessages.mjs";
 import { summaryActions } from "../../reducer/reducerSummary.mjs";
-import { SvgIcon } from "../svgIcon.mjs";
 
 const LINKS_REGEX = /((\w+):\/\/[^<>()'"\s]+|www(\.[-\w]+){2,})/;
 
 /**
  * Handles inserting links into the subject of a message.
  */
-class LinkifiedSubject extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
+class LinkifiedSubject extends HTMLElement {
+  static observedAttributes = ["subject", "loading"];
+
+  static get fragment() {
+    if (!this._template) {
+      let parser = new DOMParser();
+      let doc = parser.parseFromString(
+        `
+        <template>
+          <link rel="stylesheet" href="conversation.css?v=1" />
+          <div class="subject">
+          </div>
+        </template>
+        `,
+        "text/html"
+      );
+      this._template = document.importNode(doc.querySelector("template"), true);
+    }
+    return this._template.content.cloneNode(true);
   }
 
-  handleClick(event) {
-    this.props.dispatch(summaryActions.openLink({ url: event.target.title }));
-    event.preventDefault();
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.appendChild(LinkifiedSubject.fragment);
   }
 
-  render() {
-    let subject = this.props.subject;
-    if (this.props.loading) {
-      subject = browser.i18n.getMessage("message.loading");
+  /**
+   * Handles an attribute change.
+   *
+   * @param {string} name
+   * @param {string} oldValue
+   * @param {string} newValue
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    let subjectElement = this.shadowRoot.querySelector(".subject");
+    let subject = this.getAttribute("subject");
+
+    if (this.getAttribute("loading") == "true") {
+      subjectElement.textContent = browser.i18n.getMessage("message.loading");
     } else if (!subject) {
-      subject = browser.i18n.getMessage("message.noSubject");
+      subjectElement.textContent = browser.i18n.getMessage("message.noSubject");
     } else if (LINKS_REGEX.test(subject)) {
-      let contents = [];
+      let contents = document.createDocumentFragment();
       let text = subject;
-      let i = 0;
+
       while (text && LINKS_REGEX.test(text)) {
         let matches = LINKS_REGEX.exec(text);
         let [pre, ...post] = text.split(matches[1]);
-        let link = React.createElement(
-          "a",
-          {
-            href: matches[1],
-            title: matches[1],
-            className: "link",
-            onClick: this.handleClick,
-            key: i++,
-          },
-          matches[1]
-        );
+        let link = document.createElement("a");
+        link.href = matches[1];
+        link.title = matches[1];
+        link.classList.add("link");
+        link.addEventListener("click", this.handleClick.bind(this));
+        link.textContent = matches[1];
         if (pre) {
-          contents.push(pre);
+          contents.append(pre);
         }
-        contents.push(link);
+        contents.append(link);
         text = post.join(matches[1]);
       }
       if (text) {
-        contents.push(text);
+        contents.append(text);
       }
 
-      return React.createElement(
-        "div",
-        { className: "subject", title: subject },
-        React.createElement("span", null, contents)
-      );
+      subjectElement.replaceChildren(contents);
+    } else {
+      subjectElement.textContent = subject;
     }
+    if (name == "subject") {
+      document.title = subjectElement.textContent;
+    }
+  }
 
-    return React.createElement(
-      "div",
-      { className: "subject", title: subject },
-      subject
+  handleClick(event) {
+    ConversationHeader.dispatch(
+      summaryActions.openLink({ url: event.target.title })
     );
+    event.preventDefault();
   }
 }
-
-LinkifiedSubject.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  subject: PropTypes.string.isRequired,
-};
+customElements.define("linkified-subject", LinkifiedSubject);
 
 /**
- * Handles display for the header of the conversation.
+ * Handles inserting links into the subject of a message.
  */
-class _ConversationHeader extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.archiveToolbar = this.archiveToolbar.bind(this);
-    this.delete = this.delete.bind(this);
-    this.detachTab = this.detachTab.bind(this);
-    this.expandCollapse = this.expandCollapse.bind(this);
-    this.junkConversation = this.junkConversation.bind(this);
-    this.toggleRead = this.toggleRead.bind(this);
+class ConversationActionButtons extends HTMLElement {
+  static observedAttributes = [
+    "aresomemessagesunread",
+    "aresomemessagescollapsed",
+    "canjunk",
+    "darkreaderenabled",
+  ];
+
+  static get fragment() {
+    if (!this._template) {
+      let parser = new DOMParser();
+      let doc = parser.parseFromString(
+        `
+        <template>
+          <link rel="stylesheet" href="conversation.css?v=1" />
+          <button class="button-flat actions-button hidden dark-mode-toggle">
+            <svg-icon aria-hidden="true" hash="invert_colors"></svg-icon>
+          </button>
+          <button class="button-flat actions-button open-in-new">
+            <svg-icon aria-hidden="true" hash="open_in_new"></svg-icon>
+          </button>
+          <button class="button-flat actions-button toggle-unread">
+            <svg-icon aria-hidden="true" hash="new"></svg-icon>
+          </button>
+          <button class="button-flat actions-button expand">
+            <svg-icon aria-hidden="true" class="expand-more" hash="expand_more"></svg-icon>
+            <svg-icon aria-hidden="true" class="expand-less" hash="expand_less"></svg-icon>
+          </button>
+          <button class="button-flat actions-button junk">
+            <svg-icon aria-hidden="true" hash="whatshot"></svg-icon>
+          </button>
+          <button class="button-flat actions-button archive">
+            <svg-icon aria-hidden="true" hash="archive"></svg-icon>
+          </button>
+          <button class="button-flat actions-button trash">
+            <svg-icon aria-hidden="true" hash="delete"></svg-icon>
+          </button>
+        </template>
+        `,
+        "text/html"
+      );
+      this._template = document.importNode(doc.querySelector("template"), true);
+    }
+    return this._template.content.cloneNode(true);
   }
 
-  archiveToolbar(event) {
-    this.props.dispatch(messageActions.archiveConversation());
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.appendChild(ConversationActionButtons.fragment);
+
+    let prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    let darkModeToggle = /** @type {HTMLButtonElement} */ (
+      this.shadowRoot.querySelector(".dark-mode-toggle")
+    );
+
+    darkModeToggle.title = browser.i18n.getMessage(
+      "message.turnDarkModeOff.tooltip"
+    );
+    darkModeToggle.addEventListener("click", this.#toggleDarkMode.bind(this));
+
+    if (prefersDarkQuery.matches) {
+      darkModeToggle.classList.remove("hidden");
+    }
+    prefersDarkQuery.addEventListener(
+      "change",
+      this.#darkModeUpdated.bind(this)
+    );
+
+    let openInNew = /** @type {HTMLButtonElement} */ (
+      this.shadowRoot.querySelector(".open-in-new")
+    );
+    openInNew.title = browser.i18n.getMessage("message.detach.tooltip");
+    openInNew.addEventListener("click", this.#detachTab.bind(this));
+
+    let toggleUnread = /** @type {HTMLButtonElement} */ (
+      this.shadowRoot.querySelector(".toggle-unread")
+    );
+    toggleUnread.title = browser.i18n.getMessage("message.read.tooltip");
+    toggleUnread.addEventListener("click", this.#toggleRead.bind(this));
+
+    let expand = /** @type {HTMLButtonElement} */ (
+      this.shadowRoot.querySelector(".expand")
+    );
+    expand.title = browser.i18n.getMessage("message.expand.tooltip");
+    expand.addEventListener("click", this.#expandCollapse.bind(this));
+
+    let junk = /** @type {HTMLButtonElement} */ (
+      this.shadowRoot.querySelector(".junk")
+    );
+    junk.title = browser.i18n.getMessage("message.junk.tooltip");
+    junk.addEventListener("click", this.#junk.bind(this));
+
+    let archive = /** @type {HTMLButtonElement} */ (
+      this.shadowRoot.querySelector(".archive")
+    );
+    archive.title = browser.i18n.getMessage("message.archive.tooltip");
+    archive.addEventListener("click", this.#archive.bind(this));
+
+    let trash = /** @type {HTMLButtonElement} */ (
+      this.shadowRoot.querySelector(".trash")
+    );
+    trash.title = browser.i18n.getMessage("message.trash.tooltip");
+    trash.addEventListener("click", this.#trash.bind(this));
   }
 
-  delete(event) {
-    this.props.dispatch(messageActions.deleteConversation());
+  /**
+   * Handles an attribute change.
+   *
+   * @param {string} name
+   * @param {string} oldValue
+   * @param {string} newValue
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    switch (name) {
+      case "aresomemessagesunread": {
+        let toggleUnread = this.shadowRoot.querySelector(".toggle-unread");
+        if (newValue === "true") {
+          toggleUnread.classList.add("unread");
+        } else {
+          toggleUnread.classList.remove("unread");
+        }
+        break;
+      }
+      case "aresomemessagescollapsed": {
+        let expand = this.shadowRoot.querySelector(".expand");
+        if (newValue === "true") {
+          expand.classList.remove("collapse");
+        } else {
+          expand.classList.add("collapse");
+        }
+        break;
+      }
+      case "canjunk": {
+        let junk = this.shadowRoot.querySelector(".junk");
+        if (newValue === "true") {
+          junk.classList.remove("hidden");
+        } else {
+          junk.classList.add("hidden");
+        }
+        break;
+      }
+      case "darkreaderenabled": {
+        let darkToggle = /** @type {HTMLButtonElement} */ (
+          this.shadowRoot.querySelector(".dark-mode-toggle")
+        );
+        darkToggle.title = browser.i18n.getMessage(
+          newValue === "true"
+            ? "message.turnDarkModeOff.tooltip"
+            : "message.turnDarkModeOn.tooltip"
+        );
+        darkToggle
+          .querySelector("svg-icon")
+          .setAttribute(
+            "hash",
+            newValue === "true" ? "invert_colors" : "invert_colors_off"
+          );
+        break;
+      }
+    }
+  }
+
+  handleClick(event) {
+    ConversationHeader.dispatch(
+      summaryActions.openLink({ url: event.target.title })
+    );
+    event.preventDefault();
+  }
+
+  #darkModeUpdated(event) {
+    let darkModeToggle = this.shadowRoot.querySelector(".dark-mode-toggle");
+    if (event.matches) {
+      darkModeToggle.classList.remove("hidden");
+    } else {
+      darkModeToggle.classList.add("hidden");
+    }
+  }
+
+  #toggleDarkMode(event) {
+    ConversationHeader.dispatch(summaryActions.toggleDarkReaderEnabled());
   }
 
   /**
@@ -109,178 +285,168 @@ class _ConversationHeader extends React.PureComponent {
    *
    * @param {Event} event
    */
-  detachTab(event) {
-    this.props.dispatch(messageActions.detachTab());
+  #detachTab(event) {
+    ConversationHeader.dispatch(messageActions.detachTab());
   }
 
-  get areSomeMessagesCollapsed() {
-    return !this.props.msgData?.some((msg) => msg.expanded);
+  // Mark the current conversation as read/unread. The conversation driver
+  //  takes care of setting the right class on us whenever the state
+  //  changes...
+  #toggleRead(event) {
+    ConversationHeader.dispatch(
+      messageActions.toggleConversationRead({
+        read: this.getAttribute("aresomemessagesunread") === "true",
+      })
+    );
   }
 
-  get areSomeMessagesUnread() {
-    return this.props.msgData?.some((msg) => !msg.read);
+  #expandCollapse(event) {
+    ConversationHeader.dispatch(
+      messageActions.toggleConversationExpanded({
+        expand: this.getAttribute("aresomemessagescollapsed") === "true",
+      })
+    );
   }
 
-  get canJunk() {
+  #junk(event) {
+    // This callback is only activated when the conversation is not a
+    //  conversation in a tab AND there's only one message in the conversation,
+    //  i.e. the currently selected message
+    ConversationHeader.dispatch(
+      messageActions.markAsJunk({
+        id: this.getAttribute("firstid"),
+        isJunk: true,
+      })
+    );
+  }
+
+  #archive(event) {
+    ConversationHeader.dispatch(messageActions.archiveConversation());
+  }
+
+  #trash(event) {
+    ConversationHeader.dispatch(messageActions.deleteConversation());
+  }
+}
+customElements.define("conv-actions-buttons", ConversationActionButtons);
+
+/**
+ * Defines the custom element for the conversation header.
+ */
+export class ConversationHeader extends HTMLElement {
+  static dispatch;
+
+  static get fragment() {
+    if (!this._template) {
+      let parser = new DOMParser();
+      let doc = parser.parseFromString(
+        `
+        <template>
+          <link rel="stylesheet" href="conversation.css?v=1" />
+          <div class="conversationHeaderWrapper" />
+            <div class="conversationHeader">
+              <linkified-subject></linkified-subject>
+              <conv-actions-buttons class="actions"></conv-actions-buttons>
+            </div>
+          </div>
+        </template>
+        `,
+        "text/html"
+      );
+      this._template = document.importNode(doc.querySelector("template"), true);
+    }
+    return this._template.content.cloneNode(true);
+  }
+
+  /** @type {LinkifiedSubject} */
+  #linkifiedSubject;
+  /** @type {ConversationActionButtons} */
+  #convActionButtons;
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.appendChild(ConversationHeader.fragment);
+  }
+
+  connectedCallback() {
+    this.#linkifiedSubject = this.shadowRoot.querySelector("linkified-subject");
+    this.#convActionButtons = this.shadowRoot.querySelector(
+      "conv-actions-buttons"
+    );
+  }
+
+  disconnectedCallback() {
+    this.#linkifiedSubject = null;
+    this.#convActionButtons = null;
+  }
+
+  areSomeMessagesCollapsed(msgData) {
+    return !msgData?.some((msg) => msg.expanded);
+  }
+
+  areSomeMessagesUnread(msgData) {
+    return !!msgData?.some((msg) => !msg.read);
+  }
+
+  canJunk(msgData) {
     // TODO: Disable if in just a new tab? (e.g. double-click)
     // as per old comment:
     // We can never junk a conversation in a new tab, because the junk
     // command only operates on selected messages, and we're not in a
     // 3pane context anymore.
 
-    return (
-      this.props.msgData &&
-      this.props.msgData.length <= 1 &&
-      this.props.msgData.some((msg) => !msg.isJunk)
-    );
+    return msgData.length <= 1 && msgData.some((msg) => !msg.isJunk);
   }
 
-  expandCollapse(event) {
-    this.props.dispatch(
-      messageActions.toggleConversationExpanded({
-        expand: this.areSomeMessagesCollapsed,
-      })
-    );
-  }
+  setData(summary, msgData) {
+    if (
+      this.#linkifiedSubject.getAttribute("loading") !=
+      summary.loading.toString()
+    ) {
+      this.#linkifiedSubject.setAttribute("loading", summary.loading);
+    }
+    if (this.#linkifiedSubject.getAttribute("subject") != summary.subject) {
+      this.#linkifiedSubject.setAttribute("subject", summary.subject);
+    }
+    if (
+      this.#convActionButtons.getAttribute("darkreaderenabled") !=
+      summary.darkReaderEnabled.toString()
+    ) {
+      this.#convActionButtons.setAttribute(
+        "darkreaderenabled",
+        summary.darkReaderEnabled
+      );
+    }
 
-  junkConversation(event) {
-    // This callback is only activated when the conversation is not a
-    //  conversation in a tab AND there's only one message in the conversation,
-    //  i.e. the currently selected message
-    this.props.dispatch(
-      messageActions.markAsJunk({
-        id: this.props.msgData[0].id,
-        isJunk: true,
-      })
-    );
-  }
-
-  // Mark the current conversation as read/unread. The conversation driver
-  //  takes care of setting the right class on us whenever the state
-  //  changes...
-  toggleRead(event) {
-    this.props.dispatch(
-      messageActions.toggleConversationRead({
-        read: this.areSomeMessagesUnread,
-      })
-    );
-  }
-
-  render() {
-    document.title = this.props.subject;
-    return React.createElement(
-      "div",
-      { className: "conversationHeaderWrapper" },
-      React.createElement(
-        "div",
-        { className: "conversationHeader" },
-        React.createElement(LinkifiedSubject, {
-          dispatch: this.props.dispatch,
-          loading: this.props.loading,
-          subject: this.props.subject,
-        }),
-        React.createElement(
-          "div",
-          { className: "actions" },
-          React.createElement(
-            "button",
-            {
-              className: "button-flat",
-              title: browser.i18n.getMessage("message.detach.tooltip"),
-              onClick: this.detachTab,
-            },
-            React.createElement(SvgIcon, {
-              ariaHidden: true,
-              hash: "open_in_new",
-            })
-          ),
-          React.createElement(
-            "button",
-            {
-              className: `button-flat ${
-                this.areSomeMessagesUnread ? "unread" : ""
-              }`,
-              title: browser.i18n.getMessage("message.read.tooltip"),
-              onClick: this.toggleRead,
-            },
-            React.createElement(SvgIcon, { ariaHidden: true, hash: "new" })
-          ),
-          React.createElement(
-            "button",
-            {
-              className: "button-flat",
-              title: browser.i18n.getMessage("message.expand.tooltip"),
-              onClick: this.expandCollapse,
-            },
-            React.createElement(
-              "svg",
-              {
-                className: `icon expand ${
-                  this.areSomeMessagesCollapsed ? "" : "collapse"
-                }`,
-                "aria-hidden": true,
-                viewBox: "0 0 24 24",
-                xmlns: "http://www.w3.org/2000/svg",
-                xmlnsXlink: "http://www.w3.org/1999/xlink",
-              },
-              React.createElement("use", {
-                className: "expand-more",
-                xlinkHref: "icons/material-icons.svg#expand_more",
-              }),
-              React.createElement("use", {
-                className: "expand-less",
-                xlinkHref: "icons/material-icons.svg#expand_less",
-              })
-            )
-          ),
-          this.canJunk &&
-            React.createElement(
-              "button",
-              {
-                className: "button-flat junk-button",
-                title: browser.i18n.getMessage("message.junk.tooltip"),
-                onClick: this.junkConversation,
-              },
-              React.createElement(SvgIcon, {
-                ariaHidden: true,
-                hash: "whatshot",
-              })
-            ),
-          React.createElement(
-            "button",
-            {
-              className: "button-flat",
-              title: browser.i18n.getMessage("message.archive.tooltip"),
-              onClick: this.archiveToolbar,
-            },
-            React.createElement(SvgIcon, { ariaHidden: true, hash: "archive" })
-          ),
-          React.createElement(
-            "button",
-            {
-              className: "button-flat",
-              title: browser.i18n.getMessage("message.trash.tooltip"),
-              onClick: this.delete,
-            },
-            React.createElement(SvgIcon, { ariaHidden: true, hash: "delete" })
-          )
-        )
-      )
-    );
+    if (msgData) {
+      let someCollapsed = this.areSomeMessagesCollapsed(msgData);
+      if (
+        this.#convActionButtons.getAttribute("aresomemessagescollapsed") !=
+        someCollapsed.toString()
+      ) {
+        this.#convActionButtons.setAttribute(
+          "aresomemessagescollapsed",
+          someCollapsed.toString()
+        );
+      }
+      let someUnread = this.areSomeMessagesUnread(msgData);
+      if (
+        this.#convActionButtons.getAttribute("aresomemessagesunread") !=
+        someUnread.toString()
+      ) {
+        this.#convActionButtons.setAttribute(
+          "aresomemessagesunread",
+          someUnread.toString()
+        );
+      }
+      let canJunk = this.canJunk(msgData);
+      if (
+        this.#convActionButtons.getAttribute("canjunk") != canJunk.toString()
+      ) {
+        this.#convActionButtons.setAttribute("canjunk", canJunk.toString());
+      }
+    }
   }
 }
-
-_ConversationHeader.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  subject: PropTypes.string.isRequired,
-  msgData: PropTypes.array.isRequired,
-};
-
-export const ConversationHeader = ReactRedux.connect((state) => {
-  return {
-    loading: state.summary.loading,
-    subject: state.summary.subject,
-    msgData: state.messages.msgData,
-  };
-})(_ConversationHeader);
+customElements.define("conversation-header", ConversationHeader);

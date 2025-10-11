@@ -4,7 +4,6 @@
 
 import React from "react";
 import { attachmentActions } from "../../reducer/reducerAttachments.mjs";
-import { SvgIcon } from "../svgIcon.mjs";
 import { ActionButton } from "./messageActionButton.mjs";
 
 const ICON_MAPPING = new Map([
@@ -198,6 +197,8 @@ function Attachment({
   }, [displayMenu]);
 
   function handleDisplayMenu(event) {
+    event.preventDefault();
+    event.stopPropagation();
     setDisplayMenu(!displayMenu);
   }
 
@@ -287,7 +288,7 @@ function Attachment({
                 title: browser.i18n.getMessage("attachments.preview.tooltip"),
                 onClick: preview,
               },
-              React.createElement(SvgIcon, { hash: "visibility" })
+              React.createElement("svg-icon", { hash: "visibility" })
             ),
           React.createElement(
             "a",
@@ -296,7 +297,7 @@ function Attachment({
               title: browser.i18n.getMessage("attachments.download.tooltip"),
               onClick: downloadAttachment,
             },
-            React.createElement(SvgIcon, { hash: "file_download" })
+            React.createElement("svg-icon", { hash: "file_download" })
           ),
           React.createElement(
             "a",
@@ -305,7 +306,7 @@ function Attachment({
               title: browser.i18n.getMessage("attachments.open.tooltip"),
               onClick: openAttachment,
             },
-            React.createElement(SvgIcon, { hash: "search" })
+            React.createElement("svg-icon", { hash: "search" })
           ),
           React.createElement(
             "span",
@@ -317,7 +318,7 @@ function Attachment({
                 title: browser.i18n.getMessage("attachments.moreMenu.tooltip"),
                 onClick: handleDisplayMenu,
               },
-              React.createElement(SvgIcon, { hash: "more_vert" })
+              React.createElement("svg-icon", { hash: "more_vert" })
             ),
             displayMenu &&
               React.createElement(AttachmentMoreMenu, {
@@ -366,7 +367,7 @@ export function Attachments({ dispatch, attachments, attachmentsPlural, id }) {
           onClick: downloadAll,
           title: browser.i18n.getMessage("attachments.downloadAll.tooltip"),
         },
-        React.createElement(SvgIcon, { hash: "file_download" })
+        React.createElement("svg-icon", { hash: "file_download" })
       ),
       showGalleryLink &&
         React.createElement(
@@ -376,7 +377,7 @@ export function Attachments({ dispatch, attachments, attachmentsPlural, id }) {
             className: "icon-link view-all",
             title: browser.i18n.getMessage("attachments.gallery.tooltip"),
           },
-          React.createElement(SvgIcon, { hash: "photo_library" })
+          React.createElement("svg-icon", { hash: "photo_library" })
         )
     ),
     attachments.map((attachment) =>
